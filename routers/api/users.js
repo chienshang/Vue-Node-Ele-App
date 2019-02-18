@@ -2,7 +2,6 @@
 
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcrypt");
 
 const User = require("../../model/User");
 
@@ -31,10 +30,9 @@ router.post("/register", (req, res) => {
           email: req.body.email,
           avatar,
           password: req.body.password
-        })
-      }
-    })
-
+        });
+      };
+    });
 });
 
 module.exports = router;
