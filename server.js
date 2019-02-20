@@ -1,23 +1,29 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const passport = require('passport');
 const app = express();
+const db = require('./config/keys').mongoURI;
 
 // 使用body-parser中间件
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Connect to mongodb
-mongoose.connect('mongodb://localhost:27017/TreasuryManagementSystem', { useNewUrlParser: true })
-  .then(() => console.log("MongoDB Connected"))
+mongoose.connect(db, { useNewUrlParser: true })
+  .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
-
 // 引入user.js
-app.use("/api/users", require("./routers/api/users"));
+app.use('/api/users', require('./routers/api/users'));
+
+// passport 初始化
+app.use(passport.initialize());
+require('./config/passport')(passport);
+
+// app.get('/', (req, res) => {
+//   res.send('Hello World');
+// });
 
 const port = process.env.PORT || 5000;
 
