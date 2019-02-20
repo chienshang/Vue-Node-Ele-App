@@ -35,7 +35,8 @@ router.post('/register', (req, res) => {
           name: req.body.name,
           email: req.body.email,
           avatar,
-          password: req.body.password
+          password: req.body.password,
+          identity: req.body.identity
         });
 
         newUser.save()
@@ -62,7 +63,12 @@ router.post('/login', (req, res) => {
 
       //密码匹配
       if (user.password == password) {
-        const rule = { id: user.id, name: user.name };
+        const rule = {
+          id: user.id,
+          name: user.name,
+          avatar: user.avatar,
+          identity: user.identity
+        };
         jwt.sign(rule, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
           if (err) throw err;
           res.json({
@@ -82,7 +88,12 @@ router.post('/login', (req, res) => {
 // @access Private
 
 router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) => {
-  res.json({ msg: 'success' });
+  res.json({
+    id: req.user.id,
+    name: req.user.name,
+    email: req.user.email,
+    identity: req.user.identity
+  });
 });
 
 
