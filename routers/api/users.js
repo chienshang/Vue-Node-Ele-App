@@ -12,9 +12,9 @@ const User = require('../../model/User');
 // $route  GET api/users/test
 // $desc   返回请求的json数据
 // @access public
-router.get('/test', (req, res) => {
-  res.json({ msg: 'login works' });
-});
+// router.get('/test', (req, res) => {
+//   res.json({ msg: 'login works' });
+// });
 
 // $route  POST api/users/test
 // $desc   返回请求的json数据
@@ -27,7 +27,7 @@ router.post('/register', (req, res) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (user) {
-        return res.status(400).json({ email: '邮箱已被注册' });
+        return res.status(400).json('邮箱已被注册');
       } else {
         const avatar = gravatar.url(req.body.email, { s: '200', r: 'pg', d: 'mm' });
 
@@ -58,7 +58,7 @@ router.post('/login', (req, res) => {
   User.findOne({ email })
     .then(user => {
       if (!user) {
-        return res.status(404).json({ email: '用户不存在' });
+        return res.status(404).json('用户不存在');
       }
 
       //密码匹配
@@ -78,7 +78,7 @@ router.post('/login', (req, res) => {
         })
         // res.json({ msg: 'success' });
       } else {
-        return res.status(400).json({ password: '密码错误！' });
+        return res.status(400).json('密码错误！');
       }
     })
 })

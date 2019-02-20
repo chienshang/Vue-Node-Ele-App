@@ -14,8 +14,9 @@ mongoose.connect(db, { useNewUrlParser: true })
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
-// 引入user.js
+// 使用router
 app.use('/api/users', require('./routers/api/users'));
+app.use('/api/profiles', require('./routers/api/profiles'));
 
 // passport 初始化
 app.use(passport.initialize());
