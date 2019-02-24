@@ -16,11 +16,11 @@
           <el-form-item label="邮箱" prop="email">
             <el-input v-model="registerUser.email" placeholder="请输入email"></el-input>
           </el-form-item>
-          <el-form-item type="password" label="密码" prop="password">
-            <el-input v-model="registerUser.password" placeholder="请输入密码"></el-input>
+          <el-form-item label="密码" prop="password">
+            <el-input type="password" v-model="registerUser.password" placeholder="请输入密码"></el-input>
           </el-form-item>
-          <el-form-item type="password" label="确认密码" prop="password2">
-            <el-input v-model="registerUser.password2" placeholder="请确认密码"></el-input>
+          <el-form-item label="确认密码" prop="password2">
+            <el-input type="password" v-model="registerUser.password2" placeholder="请确认密码"></el-input>
           </el-form-item>
           <el-form-item label="选择身份">
             <el-select v-model="registerUser.identity" placeholder="请选择身份">
@@ -116,10 +116,17 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
-        } else {
-          console.log("error submit!!");
-          return false;
+          this.$axios
+            .post("/api/users/register", this.registerUser)
+            .then(res => {
+              //注册成功
+              this.$message({
+                message: "账号注册成功！",
+                type: "success"
+              });
+            });
+
+          this.$router.push("/login");
         }
       });
     }
